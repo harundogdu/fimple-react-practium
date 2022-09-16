@@ -1,0 +1,25 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  &__label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  &__input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    &:focus {
+      outline: none;
+      border-color: #000;
+    }
+  }
+  &__error {
+    color: red;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+}
