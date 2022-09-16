@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export default function FormField({
   id,
   label,
@@ -5,8 +7,7 @@ export default function FormField({
   placeholder,
   value,
   onChange,
-  onBlur,
-  error
+  ...rest
 }) {
   return (
     <div className='form-field'>
@@ -20,9 +21,22 @@ export default function FormField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onBlur={onBlur}
+        {...rest}
       />
-      {error && <p className='form-field__error'>{error}</p>}
     </div>
   );
 }
+
+FormField.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired
+};
+
+FormField.defaultProps = {
+  placeholder: '',
+  value: ''
+};
