@@ -1,7 +1,10 @@
+import { LoanCalculator, Navbar } from 'containers';
+
 export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <section className='home'>
+      <Navbar />
+      <LoanCalculator />
+    </section>
   );
 }
