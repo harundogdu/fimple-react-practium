@@ -1,0 +1,17 @@
+.loan-calculator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 100%;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #fefefe;
+  border-radius: 1rem;
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+}
