@@ -4,7 +4,9 @@ export default function Home() {
   return (
     <section className='home'>
       <Navbar />
-      <LoanCalculator />
+      <div className='home__container'>
+        <LoanCalculator />
+      </div>
     </section>
   );
 }
