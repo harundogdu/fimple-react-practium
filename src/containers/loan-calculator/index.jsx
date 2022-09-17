@@ -5,18 +5,23 @@ import {
   FormField,
   FormGroup,
   FormRow,
-  SelectField
+  Modal,
+  SelectField,
+  Table
 } from 'components';
 import { useLoanFields } from 'contexts';
+import { useState } from 'react';
+import { loanTableHeaderColumns } from 'utils';
 
 export default function LoanCalculatorForm() {
   const { loanState, updateLoanState, calculateLoan } = useLoanFields();
+  const [calculatedLoan, setCalculatedLoan] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLoanFormSubmit = event => {
     event.preventDefault();
-
-    const obj = calculateLoan();
-    console.log(obj);
+    setCalculatedLoan(calculateLoan());
+    setIsModalOpen(true);
   };
 
   const handleLoanFormChange = event => {
@@ -46,16 +51,16 @@ export default function LoanCalculatorForm() {
             </FormGroup>
             <FormGroup>
               <FormField
-                label='Loan Term'
+                id='interestRate'
+                name='interestRate'
+                label='Interest Rate (%)'
                 type='text'
-                id='loanTerm'
-                placeholder='Enter loan term'
-                name='loanTerm'
-                value={loanState.loanTerm}
+                placeholder='Enter interest rate'
+                value={loanState.interestRate}
                 onChange={handleLoanFormChange}
-                pattern='[0-9]*'
                 required
                 min='0'
+                pattern="[0-9]+(\.[0-9]{1,2})?%?"
               />
             </FormGroup>
           </FormColumn>
@@ -79,13 +84,14 @@ export default function LoanCalculatorForm() {
             </FormGroup>
             <FormGroup>
               <FormField
-                id='interestRate'
-                name='interestRate'
-                label='Interest Rate'
+                label='Loan Term'
                 type='text'
-                placeholder='Enter interest rate'
-                value={loanState.interestRate}
+                id='loanTerm'
+                placeholder='Enter loan term'
+                name='loanTerm'
+                value={loanState.loanTerm}
                 onChange={handleLoanFormChange}
+                pattern='[0-9]*'
                 required
                 min='0'
               />
@@ -107,7 +113,7 @@ export default function LoanCalculatorForm() {
               <FormField
                 id='taxBSMVRate'
                 name='taxBSMVRate'
-                label='Tax BSMV Rate'
+                label='Tax BSMV Rate (%)'
                 type='text'
                 placeholder='Enter tax BSMV rate'
                 value={loanState.taxBSMVRate}
@@ -133,7 +139,7 @@ export default function LoanCalculatorForm() {
               <FormField
                 id='taxKKDFRate'
                 name='taxKKDFRate'
-                label='Tax KKDF Rate'
+                label='Tax KKDF Rate (%)'
                 type='text'
                 placeholder='Enter tax KKDF rate'
                 value={loanState.taxKKDFRate}
@@ -150,6 +156,15 @@ export default function LoanCalculatorForm() {
           </FormColumn>
         </FormRow>
       </Form>
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title='Geri Ödeme Tablosu'
+        >
+          <Table columns={loanTableHeaderColumns} data={calculatedLoan} />
+        </Modal>
+      )}
     </div>
   );
 }
