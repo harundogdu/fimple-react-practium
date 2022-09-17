@@ -1,0 +1,36 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #ccc;
+
+  tr th,
+  tr td {
+    padding: 0.7rem;
+    text-align: center;
+  }
+
+  tr th {
+    background-color: #f5f5f5;
+    font-size: .9rem;
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+  }
+
+  tr td {
+    background-color: #fff;
+    font-size: .9rem;
+  }
+
+  tbody tr:nth-child(even) td {
+    background-color: #ddd;
+  }
+
+  tbody tr:hover td {
+    background-color: #000;
+  }
+
+  tbody tr:hover td {
+    color: #fff;
+  }
+}
