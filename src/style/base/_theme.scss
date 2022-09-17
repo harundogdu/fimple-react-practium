@@ -5,4 +5,46 @@ body.dark {
   a {
     color: $light;
   }
+
+  .navbar {
+    background: $color-dark-background;
+    color: $light;
+    border-bottom: $dark-gray 1px solid;
+  }
+
+  .loan-calculator {
+    background: lighten($color-dark-background, 20%);
+    color: $light;
+  }
+
+  #modal {
+    .modal__content {
+      background: lighten($color-dark-background, 20%);
+      color: $light;
+
+      &-title {
+        background: lighten($color-dark-background, 20%);
+        color: $light;
+      }
+    }
+  }
+
+  table {
+    border: 1px solid $dark-gray;
+    tr th {
+      background-color: lighten($color-dark-background, 1%);
+      border-bottom: 1px solid $dark-gray;
+    }
+    tr td {
+      background-color: lighten($color-dark-background, 20%);
+    }
+
+    tbody tr:nth-child(even) td {
+      background-color: lighten($color-dark-background, 25%);
+    }
+
+    tbody tr:hover td {
+      background-color: lighten($color-dark-background, 5%);
+    }
+  }
 }
