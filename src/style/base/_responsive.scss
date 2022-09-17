@@ -1,0 +1,27 @@
+@media screen and (max-width: 1024px) {
+  body {
+    .home {
+      .loan-calculator {
+        width: 70%;
+
+        .modal__content {
+          width: 90%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    .home {
+      .loan-calculator {
+        width: 90%;
+
+        .modal__content {
+          width: 95%;
+        }
+      }
+    }
+  }
+}
