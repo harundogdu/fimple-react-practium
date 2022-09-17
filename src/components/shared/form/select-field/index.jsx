@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types';
 
-export default function SelectField({ label, name, value, onChange, options }) {
+export default function SelectField({
+  label,
+  name,
+  value,
+  onChange,
+  options,
+  ...rest
+}) {
   return (
     <div className='form-field'>
       <label className='form-field__label' htmlFor={name}>
@@ -12,6 +19,7 @@ export default function SelectField({ label, name, value, onChange, options }) {
         name={name}
         value={value}
         onChange={onChange}
+        {...rest}
       >
         {options.map(option => (
           <option key={option.value} value={option.value}>

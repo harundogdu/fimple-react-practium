@@ -11,14 +11,8 @@ const FormGroup = ({ children }) => {
 };
 
 export default function Form({ children, onSubmit }) {
-
-  const handleSubmit = event => {
-    event.preventDefault();
-  };
-
-
   return (
-    <form className='form' onSubmit={handleSubmit}>
+    <form className='form' onSubmit={onSubmit}>
       {children}
     </form>
   );

@@ -32,7 +32,7 @@ FormField.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.string || PropTypes.number,
   onChange: PropTypes.func.isRequired
 };
 
