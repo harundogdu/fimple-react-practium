@@ -1,5 +1,5 @@
 .modal {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -9,12 +9,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   &__content {
+    width: 60%;
+    height: fit-content;
+    max-height: 90%;
+    overflow-y: auto;
     background-color: #fff;
-    padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    padding: 20px;
+    padding-top: 0;
+
+    &-title {
+      font-size: 1.3rem;
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      padding: 20px 0;
+    }
   }
 
   &.open {
