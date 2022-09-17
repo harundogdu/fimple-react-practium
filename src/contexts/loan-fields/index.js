@@ -2,10 +2,10 @@ import { createContext, useState, useContext } from 'react';
 import { moneyFormat } from 'utils';
 
 const initialState = {
-  loanAmount: 100000,
-  loanTerm: 12,
+  loanAmount: '',
+  loanTerm: '',
   loanType: 'monthly',
-  interestRate: 2.28,
+  interestRate: '',
   taxBSMVRate: 10,
   taxKKDFRate: 15
 };
@@ -22,15 +22,25 @@ const LoanFieldsProvider = ({ children }) => {
     });
   };
 
+  const getLoanTypeChangeRate = remainingPrincipalAmount => {
+    switch (loanState.loanType) {
+      case 'weekly':
+        return parseFloat(remainingPrincipalAmount * (loanState.interestRate / 100) * (7 / 30))
+      case 'yearly':
+        return parseFloat((remainingPrincipalAmount * (loanState.interestRate / 100) * (365 / 30)) / (loanState.loanTerm + 1));
+      case 'monthly':
+      default:
+        return parseFloat(remainingPrincipalAmount * (loanState.interestRate / 100) * (30 / 30));
+    }
+  };
+
   const calculateLoan = () => {
-    const { loanAmount, loanTerm, loanType, interestRate } = loanState;
+    const { loanAmount, loanTerm, interestRate } = loanState;
 
     const loan = [];
     let remainingLoanTerm = loanTerm;
     let remainingPrincipalAmount = loanAmount;
     let compoundProfitAmount = 0;
-
-    //  ( Anapara * Kâr oranı * (365 / 30 ))
 
     while (remainingLoanTerm > 0) {
       // const basciProfitAmount = remainingPrincipalAmount * (interestRate / 100) * (loanTypeDay / 30);
@@ -38,26 +48,19 @@ const LoanFieldsProvider = ({ children }) => {
 
       // const compoundProfitAmount = parseFloat(remainingPrincipalAmount * Math.pow(1 + (interestRate / 100), 30 / 30) - remainingPrincipalAmount)
       // if u want to calculate profit amount with compound interest rate then use above line
-    
-      switch (loanType) {
-        case 'weekly':
-           compoundProfitAmount = (remainingPrincipalAmount * (interestRate / 100) * (7 / 30))
-           break;
-        case 'yearly':
-          compoundProfitAmount = remainingPrincipalAmount * (interestRate / 100) * (365 / 30) / (loanState.loanTerm + 1)
-          break;
-        case 'monthly':
-        default:
-          compoundProfitAmount = (remainingPrincipalAmount * (interestRate / 100) * (30 / 30))
-          break;
-      }
-      
+       
+      // compound profit amount calculation
+      compoundProfitAmount = getLoanTypeChangeRate(remainingPrincipalAmount);
+
+      // calculate kkdf amount
       const kkdfAmount = parseFloat((compoundProfitAmount * loanState.taxKKDFRate) / 100);
+      // calculate bsmv amount
       const bsmvAmount = parseFloat((compoundProfitAmount * loanState.taxBSMVRate) / 100);
-     
+     // calculate total tax amount
       const totalTaxPayment = (kkdfAmount / remainingPrincipalAmount) + (bsmvAmount / remainingPrincipalAmount);
+      // calculate installment amount
       const installmentAmount = loanAmount * (((interestRate  / 100) + totalTaxPayment) * ((1 + (interestRate  / 100) + totalTaxPayment) ** loanTerm) / (((1 + (interestRate  / 100) + totalTaxPayment) ** loanTerm ) - 1));
- 
+      // calculate principal amount
       const principalAmount = parseFloat(Number(installmentAmount - (compoundProfitAmount + kkdfAmount + bsmvAmount)));
 
       remainingPrincipalAmount = parseFloat(remainingPrincipalAmount - principalAmount);
@@ -74,7 +77,6 @@ const LoanFieldsProvider = ({ children }) => {
         kkdfAmount: moneyFormat(kkdfAmount),
         bsmvAmount: moneyFormat(bsmvAmount)
       });
-
 
     }
 
@@ -94,14 +96,6 @@ const LoanFieldsProvider = ({ children }) => {
   );
 };
 
-export const useLoanFields = () => {
-  const context = useContext(LoanFieldsContext);
-
-  if (!context) {
-    throw new Error('useLoanFields must be used within a LoanFieldsProvider');
-  }
-
-  return context;
-};
+export const useLoanFields = () => useContext(LoanFieldsContext);
 
 export default LoanFieldsProvider;
