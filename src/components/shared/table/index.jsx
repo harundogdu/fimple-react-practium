@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
+
 
 const Table = ({ columns, data }) => {
   return (
@@ -21,6 +23,16 @@ const Table = ({ columns, data }) => {
       </tbody>
     </table>
   );
+};
+
+Table.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array
+};
+
+Table.defaultProps = {
+  columns: [],
+  data: []
 };
 
 export default Table;
