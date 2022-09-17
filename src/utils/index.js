@@ -1,10 +1,8 @@
-export const moneyFormat = (value, currency = 'TRY') => {
-  return new Intl.NumberFormat('tr-TR', {
-    style: 'currency',
-    currency
-  }).format(value);
-};
+export {
+  moneyFormat,
+  numberFormat
+} from './helper';
 
-export const numberFormat = value => {
-  return new Intl.NumberFormat('tr-TR').format(value);
-};
+export {
+  loanTableHeaderColumns
+} from './table-helper';
