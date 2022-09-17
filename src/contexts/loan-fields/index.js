@@ -16,81 +16,76 @@ const LoanFieldsProvider = ({ children }) => {
   const [loanState, setLoanState] = useState(initialState);
 
   const updateLoanState = (field, value) => {
-    setLoanState({ ...loanState, [field]: value });
-  };
-
-  const loanTypeConvertToDay = type => {
-    switch (type) {
-      case 'weekly':
-        return 7;
-      case 'yearly':
-        return 365;
-      case 'monthly':
-      default:
-        return 30;
-    }
+    setLoanState({
+      ...loanState,
+      [field]: value
+    });
   };
 
   const calculateLoan = () => {
     const { loanAmount, loanTerm, loanType, interestRate } = loanState;
 
     const loan = [];
-    const loanTypeDay = loanTypeConvertToDay(loanType);
     let remainingLoanTerm = loanTerm;
     let remainingPrincipalAmount = loanAmount;
+    let compoundProfitAmount = 0;
+
+    //  ( Anapara * Kâr oranı * (365 / 30 ))
 
     while (remainingLoanTerm > 0) {
-      const profitAmount = parseFloat(
-        remainingPrincipalAmount *
-          Math.pow(1 + interestRate / 100, loanTypeDay / 30) -
-          remainingPrincipalAmount
-      );
-      const kkdfAmount = parseFloat(
-        (profitAmount * loanState.taxKKDFRate) / 100
-      );
-      const bsmvAmount = parseFloat(
-        (profitAmount * loanState.taxBSMVRate) / 100
-      );
-      const calculatedRate = parseFloat(
-        Number(
-          interestRate / 100 +
-            kkdfAmount / remainingPrincipalAmount +
-            bsmvAmount / remainingPrincipalAmount
-        ).toFixed(4)
-      );
-      const installmentAmount = parseFloat(
-        loanAmount *
-          ((calculatedRate * (1 + calculatedRate) ** loanTerm) /
-            ((1 + calculatedRate) ** loanTerm - 1))
-      );
-      const principalAmount = parseFloat(
-        installmentAmount - (profitAmount + kkdfAmount + bsmvAmount)
-      );
+      // const basciProfitAmount = remainingPrincipalAmount * (interestRate / 100) * (loanTypeDay / 30);
+      // if u want to calculate profit amount with basic interest rate then use above line
 
-      remainingLoanTerm--;
-      remainingPrincipalAmount = parseFloat(
-        remainingPrincipalAmount - principalAmount
-      );
-
-      if (remainingPrincipalAmount < 0) {
-        remainingPrincipalAmount = 0;
+      // const compoundProfitAmount = parseFloat(remainingPrincipalAmount * Math.pow(1 + (interestRate / 100), 30 / 30) - remainingPrincipalAmount)
+      // if u want to calculate profit amount with compound interest rate then use above line
+    
+      switch (loanType) {
+        case 'weekly':
+           compoundProfitAmount = (remainingPrincipalAmount * (interestRate / 100) * (7 / 30))
+           break;
+        case 'yearly':
+          compoundProfitAmount = remainingPrincipalAmount * (interestRate / 100) * (365 / 30) / (loanState.loanTerm + 1)
+          break;
+        case 'monthly':
+        default:
+          compoundProfitAmount = (remainingPrincipalAmount * (interestRate / 100) * (30 / 30))
+          break;
       }
+      
+      const kkdfAmount = parseFloat((compoundProfitAmount * loanState.taxKKDFRate) / 100);
+      const bsmvAmount = parseFloat((compoundProfitAmount * loanState.taxBSMVRate) / 100);
+     
+      const totalTaxPayment = (kkdfAmount / remainingPrincipalAmount) + (bsmvAmount / remainingPrincipalAmount);
+      const installmentAmount = loanAmount * (((interestRate  / 100) + totalTaxPayment) * ((1 + (interestRate  / 100) + totalTaxPayment) ** loanTerm) / (((1 + (interestRate  / 100) + totalTaxPayment) ** loanTerm ) - 1));
+ 
+      const principalAmount = parseFloat(Number(installmentAmount - (compoundProfitAmount + kkdfAmount + bsmvAmount)));
+
+      remainingPrincipalAmount = parseFloat(remainingPrincipalAmount - principalAmount);
+      if (remainingPrincipalAmount < 0) remainingPrincipalAmount = 0;
+      
+      remainingLoanTerm--;
 
       loan.push({
         installmentNumber: loanTerm - remainingLoanTerm,
         installmentAmount: moneyFormat(installmentAmount),
         principalAmount: moneyFormat(principalAmount),
         remainingPrincipalAmount: moneyFormat(remainingPrincipalAmount),
-        profitAmount: moneyFormat(profitAmount),
+        profitAmount: moneyFormat(compoundProfitAmount),
         kkdfAmount: moneyFormat(kkdfAmount),
         bsmvAmount: moneyFormat(bsmvAmount)
       });
+
+
     }
 
     return loan;
   };
 
-  const value = { loanState, updateLoanState, calculateLoan };
+  const value = {
+    loanState,
+    updateLoanState,
+    calculateLoan
+  };
 
   return (
     <LoanFieldsContext.Provider value={value}>
