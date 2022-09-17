@@ -12,8 +12,7 @@ body,
   height: 100%;
   width: 100%;
   min-height: 100vh;
-  overflow-x: hidden !important;
-  transition: $transition !important;
+  overflow: hidden !important;
 }
 
 body {
@@ -23,4 +22,16 @@ body {
 
 a {
   text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aaa;
 }
