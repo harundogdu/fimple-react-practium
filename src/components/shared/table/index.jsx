@@ -1,18 +1,20 @@
+import { v4 as uuidv4 } from 'uuid';
+
 const Table = ({ columns, data }) => {
   return (
     <table>
       <thead>
         <tr>
-          {columns.map((column,index) => (
-            <th key={index}>{column.title}</th>
+          {columns.map((column) => (
+            <th key={uuidv4()}>{column.title}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
-          <tr key={index}>
+        {data.map((item) => (
+          <tr key={uuidv4()}>
             {columns.map(column => (
-              <td key={index}>{item[column.accessor]}</td>
+              <td key={uuidv4()}>{item[column.accessor]}</td>
             ))}
           </tr>
         ))}
