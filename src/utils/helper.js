@@ -1,5 +1,4 @@
 export const moneyFormat = (value, currency = 'TRY') => {
-  console.log(value);
   return new Intl.NumberFormat('tr-TR', {
     style: 'currency',
     currency

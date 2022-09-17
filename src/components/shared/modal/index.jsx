@@ -11,9 +11,10 @@ const Modal = ({ children, isOpen, onClose, title }) => {
 
   return (
     <div
-      className={`modal ${isOpen ? 'modal open' : ''}`}
+      className={`modal ${isOpen ? 'open' : ''}`}
       onClick={handleModalClick}
       ref={modalRef}
+      id="modal"
     >
       <div className='modal__content'>
         {title && <h2 className='modal__content-title'>{title}</h2>}
