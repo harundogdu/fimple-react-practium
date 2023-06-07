@@ -54,4 +54,4 @@ npm start
 
 ## Daha fazlası
 
-Daha fazlası ve aklınıza takılan herhangi bir soru için için bana kişisel [web sitem](https://harundogdu.com/) üzerinden ulaşabilir, "Pull Request" isteklerinde bulunabilirsiniz.
+Daha fazlası ve aklınıza takılan herhangi bir soru için için bana kişisel [web sitem](https://harundogdu.dev/) üzerinden ulaşabilir, "Pull Request" isteklerinde bulunabilirsiniz.
